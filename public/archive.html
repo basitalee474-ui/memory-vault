@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Memory Vault — Every Photograph Has a Story</title><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#070B14">
+<style>
+:root{--bg:#070B14;--bg2:#0D1322;--tx:#F8FAFC;--tx2:#CBD5E1;--v:#8B5CF6;--c:#06B6D4;--p:#F472B6;--g:#FBBF24;--line:rgba(255,255,255,.14);--card:rgba(255,255,255,.06);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="light"]{--bg:#FBF8F3;--bg2:#F1EBE1;--tx:#1B1530;--tx2:#4B4560;--line:rgba(0,0,0,.16);--card:rgba(255,255,255,.8)}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--tx);font:18px/1.6 Inter,Manrope,system-ui,Arial,sans-serif;min-height:100%;padding-bottom:84px}
+h1,h2,h3{line-height:1.15;margin:0 0 .5em;font-weight:800}
+h1{font-size:clamp(2.2rem,6vw,4rem)}h2{font-size:clamp(1.6rem,4vw,2.4rem)}
+a{color:var(--c)}
+:focus-visible{outline:3px solid var(--g);outline-offset:3px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:52px;padding:0 24px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--tx);font:inherit;font-weight:700;cursor:pointer}
+.btn.pri{background:linear-gradient(135deg,var(--v),var(--c));border:0;color:#fff}
+.btn.pri:hover{box-shadow:0 0 28px rgba(139,92,246,.6)}
+.btn.danger{border-color:#f87171;color:#f87171}
+.wrap{max-width:1100px;margin:auto;padding:24px 20px}
+header.nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .in{display:flex;align-items:center;gap:14px;max-width:1100px;margin:auto;padding:10px 20px;flex-wrap:wrap}
+.logo{font-weight:900;letter-spacing:.14em;background:linear-gradient(90deg,var(--v),var(--c));-webkit-background-clip:text;background-clip:text;color:transparent;text-decoration:none}
+.nav nav{display:flex;gap:4px;margin-inline-start:auto}
+.nav nav a{padding:10px 14px;border-radius:10px;color:var(--tx);text-decoration:none;font-weight:600}
+.nav nav a.on{background:var(--card)}
+.tools{display:flex;gap:8px;align-items:center}
+select{min-height:44px;border-radius:10px;background:var(--bg2);color:var(--tx);border:1px solid var(--line);font:inherit;padding:0 8px}
+.bottom{display:none;position:fixed;bottom:0;inset-inline:0;z-index:30;background:var(--bg2);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));justify-content:space-around}
+.bottom a{display:flex;flex-direction:column;align-items:center;font-size:.8rem;color:var(--tx);text-decoration:none;padding:6px 8px;min-width:56px;font-weight:600}
+.bottom a.add{background:linear-gradient(135deg,var(--v),var(--p));color:#fff;border-radius:16px;padding:8px 16px}
+.bottom .i{font-size:1.3rem}
+@media(max-width:760px){.nav nav,.nav .addtop{display:none}.bottom{display:flex}}
+.hero{position:relative;overflow:hidden;min-height:78vh;display:grid;align-items:center;background:radial-gradient(800px 500px at 70% 30%,rgba(139,92,246,.35),transparent),radial-gradient(600px 400px at 20% 80%,rgba(6,182,212,.22),transparent),var(--bg)}
+.hero .grid{display:grid;grid-template-columns:1.1fr 1fr;gap:30px;align-items:center}
+@media(max-width:860px){.hero .grid{grid-template-columns:1fr}}
+.stage{perspective:1000px;display:grid;place-items:center;min-height:320px}
+.frame{width:min(300px,70vw);aspect-ratio:4/5;padding:16px;background:linear-gradient(145deg,#7c5a2b,#3b2a12);border-radius:8px;transform-style:preserve-3d;box-shadow:0 40px 80px rgba(0,0,0,.6),0 0 60px rgba(251,191,36,.25);animation:float 7s ease-in-out infinite;cursor:pointer;border:0;transition:transform .15s}
+.frame .ph{width:100%;height:100%;background:linear-gradient(160deg,#c8b48a,#6d5b3c 60%,#2b2215);filter:sepia(.6);display:grid;place-items:center;font-size:4rem;position:relative;overflow:hidden}
+.frame .ph:after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.25),transparent 60%);transform:translateX(var(--sx,0))}
+@keyframes float{50%{translate:0 -14px}}
+.dot{position:absolute;border-radius:50%;background:var(--g);opacity:.5;animation:drift 9s ease-in-out infinite}
+@keyframes drift{50%{transform:translate(20px,-30px)}}
+.grain{position:absolute;inset:0;opacity:.07;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E")}
+.simple .frame,.simple .dot,.simple .card3d{animation:none!important;transform:none!important}
+.simple .grain{display:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.sub{color:var(--tx2);font-size:1.15rem;max-width:34em}
+.row{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.threed .gal{perspective:1200px}
+.threed .card{transition:transform .25s,box-shadow .25s}
+.threed .card:hover{transform:translateY(-6px) rotateX(3deg) rotateY(-3deg);box-shadow:0 20px 50px rgba(139,92,246,.35)}
+.thumb{aspect-ratio:4/3;background:linear-gradient(135deg,var(--v),var(--p));display:grid;place-items:center;font-size:2.4rem;background-size:cover;background-position:center;position:relative}
+.tag{position:absolute;top:10px;inset-inline-start:10px;background:var(--g);color:#000;font-size:.8rem;font-weight:800;padding:2px 10px;border-radius:99px}
+.card .b{padding:16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card .b p{margin:0;color:var(--tx2);font-size:.95rem}
+.card .b .btn{margin-top:auto;min-height:46px}
+input[type=text],input[type=search],textarea{width:100%;min-height:52px;padding:12px 16px;border-radius:14px;border:2px solid var(--line);background:var(--bg2);color:var(--tx);font:inherit}
+textarea{min-height:160px}
+label{display:block;font-weight:700;margin:14px 0 6px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;max-width:720px;margin:auto}
+.prog{height:10px;background:var(--line);border-radius:9px;overflow:hidden;margin-bottom:22px}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--v),var(--c));transition:width .3s}
+.drop{border:3px dashed var(--line);border-radius:18px;padding:28px;text-align:center}
+.drop.over{border-color:var(--c);background:rgba(6,182,212,.1)}
+.opt{display:flex;gap:12px;align-items:flex-start;border:2px solid var(--line);border-radius:14px;padding:14px;margin:10px 0;cursor:pointer}
+.opt:has(input:checked){border-color:var(--v);background:rgba(139,92,246,.15)}
+.opt input{width:24px;height:24px;margin-top:4px}
+.person{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin:8px 0}
+@media(max-width:600px){.person{grid-template-columns:1fr}}
+.toast{position:fixed;inset-inline:16px;bottom:100px;max-width:480px;margin:auto;background:var(--bg2);border:2px solid var(--v);border-radius:14px;padding:14px 18px;z-index:50;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.toast.err{border-color:#f87171}
+.view{max-width:860px;margin:auto}
+.big{width:100%;border-radius:14px;border:10px solid #5a4220;box-shadow:0 30px 70px rgba(0,0,0,.5);max-height:70vh;object-fit:contain;background:#000;animation:zoom 20s ease-in-out infinite alternate}
+.vbox{overflow:hidden;border-radius:14px}
+@keyframes zoom{to{transform:scale(1.05)}}
+.simple .big{animation:none}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0}
+.meta div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px}
+.meta small{display:block;color:var(--tx2);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.story{white-space:pre-wrap;font-size:1.2rem;line-height:1.8}
+.dec{border-inline-start:4px solid var(--v);padding-inline-start:18px;margin:26px 0}
+.chip{display:inline-block;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 14px;margin:4px;font-weight:600}
+.empty{text-align:center;padding:50px 20px}
+.rec{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.dot-rec{width:12px;height:12px;border-radius:50%;background:#f87171;animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.3}}
+footer{border-top:1px solid var(--line);margin-top:40px;text-align:center;padding:28px 20px;color:var(--tx2)}
+footer a{margin:0 8px}
+.ok{text-align:center;padding:30px}.ok .sp{font-size:4rem;animation:zoom 1.4s ease-out}
+.note{background:rgba(251,191,36,.12);border:1px solid var(--g);border-radius:12px;padding:10px 14px;font-size:.95rem}
+</style></head>
+<body>
+<header class="nav"><div class="in">
+<a class="logo" href="#/">MEMORY VAULT</a>
+<nav aria-label="Main" id="nav"></nav>
+<div class="tools">
+<a class="btn" href="#/notify" id="bell" aria-label="Notifications">🔔</a><a class="btn pri addtop" href="#/add" id="addtop"></a>
+<select id="lang" aria-label="Language"><option value="en">English</option><option value="ur">اردو</option><option value="sd">سنڌي</option></select>
+<button class="btn" id="theme" aria-label="Switch light or dark mode">🌙</button>
+</div></div></header>
+<main id="app" tabindex="-1"></main>
+<footer><b>Memory Vault</b><p>Preserve the photograph. Remember the story.</p>
+<a href="#/">Home</a><a href="#/memories">Memories</a><a href="#/timeline">Timeline</a><a href="#/family">Family</a><a href="#/about">About</a>
+<p><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a></p><p>© Memory Vault · Private by default.</p></footer>
+<nav class="bottom" id="bottom" aria-label="Mobile"></nav>
+<div id="toast" role="status" aria-live="polite"></div>
+<script>
+const T={en:{home:"Home",memories:"Memories",timeline:"Timeline",family:"Family",about:"About",add:"+ Add Memory",h:"Every Photograph Has a Story.",sub:"Preserve the people, places, voices, and memories behind your family's photographs before they disappear.",pre:"+ Preserve a Memory",exp:"Explore Memories",trust:"Your memories belong to you.",help:"Needs Help"},
+ur:{home:"ہوم",memories:"یادیں",timeline:"ٹائم لائن",family:"خاندان",about:"ہمارے بارے میں",add:"+ یاد شامل کریں",h:"ہر تصویر کی ایک کہانی ہوتی ہے۔",sub:"اپنے خاندان کی تصویروں کے پیچھے لوگوں، جگہوں، آوازوں اور یادوں کو ختم ہونے سے پہلے محفوظ کریں۔",pre:"+ یاد محفوظ کریں",exp:"یادیں دیکھیں",trust:"آپ کی یادیں آپ کی ہیں۔",help:"مدد درکار"},
+sd:{home:"گھر",memories:"يادگيريون",timeline:"ٽائيم لائن",family:"خاندان",about:"اسان بابت",add:"+ ياد شامل ڪريو",h:"هر تصوير جي هڪ ڪهاڻي آهي.",sub:"پنهنجي خاندان جي تصويرن پويان ماڻهن، هنڌن، آوازن ۽ يادن کي ختم ٿيڻ کان اڳ محفوظ ڪريو.",pre:"+ ياد محفوظ ڪريو",exp:"يادگيريون ڏسو",trust:"توهان جون يادگيريون توهان جون آهن.",help:"مدد گهربل"}};
+const DEMO=[
+{id:"d1",demo:1,title:"Eid Morning",year:"1987",people:[{name:"Ahmed",rel:"Grandfather"},{name:"Fatima",rel:"Mother"},{name:"Ali",rel:"Uncle"}],location:"Moro, Sindh, Pakistan",story:"The whole family gathered before Eid prayer. (Sample story — not a real memory.)",vis:"me"},
+{id:"d2",demo:1,title:"Family Wedding",year:"1972",people:[{name:"Ahmed",rel:"Grandfather"}],location:"Hyderabad, Sindh",story:"Sample wedding memory showing how a story looks.",vis:"me"},
+{id:"d3",demo:1,title:"First Family Home",year:"1989",people:[{name:"Fatima",rel:"Mother"},{name:"Ali",rel:"Uncle"}],location:"Moro, Sindh",story:"The day our family moved into our first home. (Sample.)",vis:"me"},
+{id:"d4",demo:1,title:"School Days",year:"1995",people:[{name:"Ali",rel:"Uncle"}],location:"Nawabshah, Sindh",story:"Sample school memory.",vis:"me"}];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
+let LEG=ls.get("mv_mem",[]),ME=null,FAM=null,NOTES=[],UN=0,CACHE={};
+let S={mem:[],demo:ls.get("mv_demo",false),lang:ls.get("mv_lang","en"),theme:ls.get("mv_theme","dark"),simple:ls.get("mv_simple",matchMedia("(prefers-reduced-motion:reduce)").matches||navigator.hardwareConcurrency<=2),welcomed:ls.get("mv_w",false)};
+let D=null,step=0,rec=null,chunks=[];
+const t=k=>(T[S.lang]||T.en)[k]||T.en[k];
+const all=()=>S.demo?[...S.mem,...DEMO]:S.mem;
+function toast(m,err){const e=$("#toast");e.innerHTML=`<div class="toast ${err?"err":""}">${esc(m)}</div>`;setTimeout(()=>e.innerHTML="",4500)}
+function chrome(){document.documentElement.dataset.theme=S.theme;document.documentElement.dir=S.lang==="en"?"ltr":"rtl";document.documentElement.lang=S.lang;
+document.body.classList.toggle("simple",S.simple);document.body.classList.toggle("threed",!S.simple);
+$("#theme").textContent=S.theme==="dark"?"☀️":"🌙";$("#lang").value=S.lang;$("#addtop").textContent=t("add");$("#bell").textContent="🔔"+(UN?" "+UN:"");
+const h=location.hash.split("/")[1]||"";
+$("#nav").innerHTML=[["","home"],["memories","memories"],["timeline","timeline"],["family","family"],["help","help"],["about","about"]].map(([p,k])=>`<a href="#/${p}" class="${h===p?"on":""}" ${h===p?'aria-current="page"':""}>${t(k)}</a>`).join("");
+$("#bottom").innerHTML=`<a href="#/"><span class="i">🏠</span>${t("home")}</a><a href="#/memories"><span class="i">🖼️</span>${t("memories")}</a><a class="add" href="#/add"><span class="i">＋</span>Add</a><a href="#/timeline"><span class="i">🕰️</span>${t("timeline")}</a><a href="#/family"><span class="i">👨‍👩‍👧</span>${t("family")}</a>`}
+$("#theme").onclick=()=>{S.theme=S.theme==="dark"?"light":"dark";ls.set("mv_theme",S.theme);chrome();if(ME)api("profile","POST",{theme:S.theme}).catch(()=>{})};
+$("#lang").onchange=e=>{S.lang=e.target.value;ls.set("mv_lang",S.lang);route();if(ME)api("profile","POST",{language:S.lang}).catch(()=>{})};
+function card(m){const bg=m.photo?`style="background-image:url('${m.photo}')"`:"";const ppl=m.people.map(p=>p.name).join(" • ");
+return `<article class="card"><div class="thumb" ${bg} role="img" aria-label="${esc(m.title)}">${m.photo?"":"🖼️"}${m.demo?'<span class="tag">Sample</span>':""}</div><div class="b"><h3>${esc(m.title)}${m.year?" — "+esc(m.year):""}</h3><strong>${esc(ppl)}</strong>${m.demo||!m.owner?"":`<small>📋 ${sc(m).p}% complete</small>`}<p>“${esc((m.story||"No story yet").slice(0,90))}…”</p><a class="btn" href="#/view/${m.id}">View Story</a></div></article>`}
+function empty(){return `<div class="empty"><h2>Your memory archive is empty.</h2><p class="sub" style="margin:auto">Start preserving your family's stories today.</p><div class="row" style="justify-content:center"><a class="btn pri" href="#/add">+ Add Your First Memory</a><button class="btn" id="demo">Explore Demo</button></div></div>`}
+function home(){const a=all();const mod=a.length?a[new Date().getDate()%a.length]:null;
+const welcome=!S.welcomed&&!S.mem.length&&!S.demo?`<div class="wrap"><div class="panel"><h2>Welcome to Memory Vault</h2><p>Preserve your family's photographs and the stories behind them.</p><div class="row"><a class="btn pri" href="#/add" id="w1">Create Your First Memory</a><button class="btn" id="demo">Explore Demo</button></div></div></div>`:"";
+return `<section class="hero"><div class="grain"></div>${[[10,20],[80,15],[60,75],[25,65]].map(([x,y],i)=>`<i class="dot" style="left:${x}%;top:${y}%;width:${6+i*3}px;height:${6+i*3}px;animation-delay:${i}s"></i>`).join("")}
+<div class="wrap grid"><div><h1>${t("h")}</h1><p class="sub">${t("sub")}</p><div class="row"><a class="btn pri" href="#/add">${t("pre")}</a><a class="btn" href="#/memories">${t("exp")}</a></div><p class="note">🔒 ${t("trust")} Saved privately to your account.</p></div>
+<div class="stage" id="stage"><button class="frame" id="frame" aria-label="Open the memory archive"><div class="ph">👨‍👩‍👧</div></button></div></div></section>${welcome}
+<div class="wrap"><h2>❤️ Memory of the Day</h2>${mod?`<div class="gal" style="grid-template-columns:minmax(0,420px)">${card(mod)}</div>`:empty()}</div>`}
+function memories(){const q=(sessionStorage.getItem("q")||"").toLowerCase();const a=all().filter(m=>!q||[m.title,m.year,m.location,m.story,...m.people.map(p=>p.name+" "+p.rel)].join(" ").toLowerCase().includes(q));
+return `<div class="wrap"><h2>Memories</h2>${legBanner()}<div class="row"><input type="search" id="q" value="${esc(q)}" placeholder="🔎 Search your memories..." aria-label="Search your memories" style="max-width:480px"><button class="btn" id="vt" aria-pressed="${!S.simple}">${S.simple?"Simple View ✓ (switch to 3D)":"3D View ✓ (switch to Simple)"}</button></div>
+${!all().length?empty():a.length?`<div class="gal">${a.map(card).join("")}</div>`:`<div class="empty"><h3>No memories found</h3><p>Try a name, year, place or word from the story.</p></div>`}</div>`}
+function timeline(){const a=all().filter(m=>m.year).sort((x,y)=>x.year-y.year);if(!a.length)return `<div class="wrap">${empty()}</div>`;const g={};a.forEach(m=>{const d=Math.floor(parseInt(m.year)/10)*10+"s";(g[d]=g[d]||[]).push(m)});
+return `<div class="wrap"><h2>Timeline</h2>${Object.entries(g).map(([d,l])=>`<div class="dec"><h3>${d}</h3><div class="gal">${l.map(card).join("")}</div></div>`).join("")}</div>`}
+function family(){const F=FAM||{members:[],spaces:[],out:[],inn:[]},map={};all().forEach(m=>m.people.forEach(p=>{if(!p.name)return;const k=p.name.toLowerCase();(map[k]=map[k]||{name:p.name,rel:p.rel,m:[]}).m.push(m)}));const l=Object.values(map);
+return`<div class="wrap"><h2>Family</h2>${F.inn.map(i=>`<div class="note" style="margin:10px 0"><b>${esc(i.ownerName)}</b> invited you as ${i.role==="viewer"?"a viewer":"a family member"}. <button class="btn pri" data-acc="${i.id}">Accept</button> <button class="btn" data-dec="${i.id}">No thanks</button></div>`).join("")}
+<div class="panel" style="max-width:none;margin:12px 0"><h3>Invite a family member</h3><label for="ip">Their mobile number</label><input id="ip" type="text" inputmode="tel" placeholder="03XX XXXXXXX"><label for="ir">They can</label><select id="ir" style="width:100%"><option value="member">Add stories and details (Family Member)</option><option value="viewer">Only look (Viewer)</option></select><button class="btn pri" id="isd" style="margin-top:14px">Send Invitation</button>
+<h3 style="margin-top:20px">My family</h3>${F.members.length?F.members.map(m=>`<p>👤 ${esc(m.name)} (${m.role==="viewer"?"Viewer":"Family Member"}) <button class="btn" data-rm="${m.userId}">Remove</button></p>`).join(""):"<p>No one has joined yet.</p>"}${F.out.map(o=>`<p>⏳ Waiting for ${esc(o.phone)} <button class="btn" data-ci="${o.id}">Cancel</button></p>`).join("")}</div>
+${F.spaces.length?"<h3>Families I belong to</h3>"+F.spaces.map(s=>`<p>🏠 ${esc(s.ownerName)}'s family <button class="btn" data-lv="${s.ownerId}">Leave</button></p>`).join(""):""}
+<h3>People in photos</h3>${l.length?l.map(p=>`<div class="panel" style="margin:12px 0;max-width:none"><h3>${esc(p.name)} <small>${esc(p.rel||"")}</small></h3>${p.m.map(m=>`<a class="chip" href="#/view/${m.id}">${esc(m.title)}${m.year?" · "+esc(m.year):""}</a>`).join("")}</div>`).join(""):`<div class="empty"><p>People you add to memories will appear here.</p></div>`}</div>`}
+function about(){return`<div class="wrap view"><h2>About Memory Vault</h2><p class="story">Families have thousands of photographs, but the stories behind them can disappear.
+
+Memory Vault helps families preserve not only photographs, but also the names, voices, places and stories connected to them.</p><p class="note">Your memories are saved to your account on the server. They are private unless you choose to share them.</p>${ME?`<h3>Your account</h3><p>${esc(ME.fullName)} · ${esc(ME.phone)}</p><div class="row"><button class="btn pri" id="bk">⬇️ Download my data</button><button class="btn" id="bookb">📖 Make a printable Family Book</button><button class="btn" id="lo">🚪 Log out</button></div><h3>Change password</h3><label for="cp1">Current password</label><input type="password" id="cp1" autocomplete="current-password"><label for="cp2">New password</label><input type="password" id="cp2" autocomplete="new-password"><button class="btn" id="cpw" style="margin-top:12px">Change password</button><p><a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a>${ME.role==="admin"?' · <a href="/admin.html">Admin</a>':""}</p>`:""}</div>`}
+function view(id){const m=all().find(x=>x.id===id)||CACHE[id];if(!m)return `<div class="wrap empty"><h2>We couldn't find that memory.</h2><a class="btn pri" href="#/memories">Back to Memories</a></div>`;
+const ppl=m.people.map(p=>esc(p.name)+(p.rel?` (${esc(p.rel)})`:"")).join(" • ")||"Not identified";
+const vl={me:"🔒 Only Me",fam:"👨‍👩‍👧 Family",link:"🔗 Anyone with Link",pub:"🌍 Public"}[m.vis];
+return `<div class="wrap view"><a href="#/memories" class="btn">← Back</a><h2 style="margin-top:18px">${esc(m.title)}${m.year?" — "+esc(m.year):""}</h2>${m.demo?'<p class="note">This is a sample memory, not real content.</p>':""}
+${m.photo?`<div class="vbox"><img class="big" src="${m.photo}" alt="${esc(m.title)}${m.people.length?", with "+esc(m.people.map(p=>p.name).join(", ")):""}"></div>`:'<div class="thumb" style="aspect-ratio:16/9;border-radius:14px">🖼️</div>'}
+<div class="meta"><div><small>People</small>${ppl}</div><div><small>Date</small>${esc(m.year||"Unknown")}${m.dtype==="approx"?" (approximate)":""}</div><div><small>Location</small>${esc(m.location||"Unknown")}</div><div><small>Privacy</small>${vl}</div></div>
+${m.locked?`<p class="note">🔒 Time capsule: this memory opens on ${new Date(m.unlockAt).toLocaleDateString()}.</p>`:""}${pbar(m)}<h3>Story</h3><p class="story">${esc(m.story||"No story has been written yet.")}</p>
+${m.voice?`<h3>🎙️ Voice Memory</h3><audio controls src="${m.voice}" style="width:100%"></audio>`:""}
+${viewTools(m)}</div>`}
+const STEPS=["photo","people","date","where","story","privacy","preview"];
+function add(){if(!D)D={title:"",people:[],year:"",dtype:"exact",location:"",story:"",vis:"me",photo:null,voice:null};
+const pr=`<div class="prog" role="progressbar" aria-valuemin="1" aria-valuemax="7" aria-valuenow="${step+1}"><i style="width:${(step+1)/7*100}%"></i></div><p>Step ${step+1} of 7</p>`;
+const nav=`<div class="row">${step?'<button class="btn" id="back">← Back</button>':""}${step<6?`<button class="btn pri" id="next">${[1,2,3].includes(step)?"Next (or skip)":"Next →"}</button>`:'<button class="btn pri" id="save">💾 Save Memory</button>'}<button class="btn" id="cancel">Cancel</button></div>`;
+let b="";
+if(step===0)b=`<h2>Add an old photograph</h2>${D.photo?`<img src="${D.photo}" alt="Preview of your photograph" style="width:100%;border-radius:12px;max-height:50vh;object-fit:contain"><div class="row"><button class="btn" id="rot">↻ Rotate</button><button class="btn" id="rm">Remove</button></div>`:`<div class="drop" id="drop"><p><b>Drag a photo here</b> or choose one below</p><div class="row" style="justify-content:center"><label class="btn pri" style="margin:0">📷 Choose Photo<input type="file" id="f" accept="image/jpeg,image/png,image/webp" hidden></label><label class="btn" style="margin:0">📱 Take a Photo<input type="file" id="f2" accept="image/*" capture="environment" hidden></label></div><small>JPG, PNG or WEBP · up to 15 MB (we shrink it for you)</small></div>`}<p><small>You can also skip the photo.</small></p>`;
+if(step===1)b=`<h2>Who is in this photograph?</h2><div id="ppl">${D.people.map((p,i)=>`<div class="person"><input type="text" data-i="${i}" data-f="name" value="${esc(p.name)}" placeholder="Name, e.g. Grandfather Ahmed" aria-label="Name"><input type="text" data-i="${i}" data-f="rel" value="${esc(p.rel)}" placeholder="Relationship (optional)" aria-label="Relationship"><button class="btn" data-rp="${i}" aria-label="Remove person">✕</button></div>`).join("")}</div><button class="btn" id="ap">+ Add Person</button><p><small>Not sure? Just press Next — you can skip this.</small></p>`;
+if(step===2)b=`<h2>When was this photograph taken?</h2><div class="opt"><input type="radio" name="dt" id="dt1" value="exact" ${D.dtype==="exact"?"checked":""}><label for="dt1" style="margin:0">Year (for example 1987)</label></div><div class="opt"><input type="radio" name="dt" id="dt2" value="approx" ${D.dtype==="approx"?"checked":""}><label for="dt2" style="margin:0">Around this year (approximate)</label></div><label for="yr">Year</label><input type="text" id="yr" inputmode="numeric" maxlength="4" value="${esc(D.year)}" placeholder="1987"><p><small>Don't know? Leave it empty and press Next.</small></p>`;
+if(step===3)b=`<h2>Where was this photograph taken?</h2><label for="loc">City, village or country</label><input type="text" id="loc" value="${esc(D.location)}" placeholder="Moro, Sindh, Pakistan"><p><small>Don't know? Leave it empty and press Next.</small></p>`;
+if(step===4)b=`<h2>What's the story behind this photograph?</h2><label for="ti">Give it a title</label><input type="text" id="ti" value="${esc(D.title)}" placeholder="Eid Morning"><div class="row"><a class="btn" id="gq" href="#/interview">🗣️ Help me remember (guided questions)</a><button class="btn" id="dict" type="button">🎙️ Speak to type</button></div><label for="st">Your story</label><textarea id="st" placeholder="Tell us what you remember about this photograph…">${esc(D.story)}</textarea><h3 style="margin-top:20px">🎤 Tell the Story (optional)</h3><div class="rec"><button class="btn" id="rc">● Record</button><button class="btn" id="ps" disabled>⏸ Pause</button><button class="btn" id="sp" disabled>■ Stop</button><span id="rs"></span></div>${D.voice?`<audio controls src="${D.voice}" style="width:100%;margin-top:10px"></audio><button class="btn" id="dv">Delete recording</button>`:""}`;
+if(step===5)b=`<h2>Who can see this memory?</h2>`+[["me","🔒 Only Me","Only you can open it."],["fam","👨‍👩‍👧 Family","Only invited family members."],["link","🔗 Anyone with Link","Anyone with the private link."],["pub","🌍 Public","Anyone can view it."]].map(([v,n,d])=>`<label class="opt" style="margin:10px 0"><input type="radio" name="vis" value="${v}" ${D.vis===v?"checked":""}><span><b>${n}</b><br>${d}</span></label>`).join("")+`<label for="ul">⏳ Time capsule (optional): family and link viewers can't open it until this date</label><input type="date" id="ul" value="${esc(D.unlock||"")}" min="${new Date().toISOString().slice(0,10)}"><p class="note">New memories are private until you choose otherwise. “Family” means people you invite on the Family page. You can always open your own memories.</p>`;
+if(step===6)b=`<h2>Does this look right?</h2>${D.photo?`<img src="${D.photo}" alt="Your photograph" style="width:100%;max-height:40vh;object-fit:contain;border-radius:12px">`:""}<h3>${esc(D.title||"Untitled memory")}</h3><p><b>People:</b> ${esc(D.people.map(p=>p.name).filter(Boolean).join(", ")||"Not identified")}<br><b>Date:</b> ${esc(D.year||"Unknown")}<br><b>Location:</b> ${esc(D.location||"Unknown")}<br><b>Privacy:</b> ${esc(D.vis)}<br><b>Voice:</b> ${D.voice?"Yes":"No"}</p><p class="story">${esc(D.story)}</p>`;
+return `<div class="wrap"><div class="panel">${pr}${b}${nav}</div></div>`}
+function grab(){const g=s=>document.querySelector(s);if(!D)return;
+if(step===1)document.querySelectorAll("[data-f]").forEach(i=>D.people[i.dataset.i][i.dataset.f]=i.value);
+if(step===2){D.year=g("#yr").value.trim();D.dtype=(document.querySelector("[name=dt]:checked")||{}).value||"exact"}
+if(step===3)D.location=g("#loc").value.trim();
+if(step===4){D.title=g("#ti").value.trim();D.story=g("#st").value.trim()}
+if(step===5){const r=document.querySelector("[name=vis]:checked");if(r)D.vis=r.value;D.unlock=(g("#ul")||{}).value||""}}
+function procImg(file,rot){return new Promise((ok,no)=>{const u=URL.createObjectURL(file);const im=new Image();im.onload=()=>{const M=1100,s=Math.min(1,M/Math.max(im.width,im.height));const c=document.createElement("canvas");c.width=im.width*s;c.height=im.height*s;c.getContext("2d").drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);ok(c.toDataURL("image/jpeg",.78))};im.onerror=()=>no();im.src=u})}
+async function takeFile(f){if(!f)return;if(!/^image\/(jpeg|png|webp)/.test(f.type)&&!f.type.startsWith("image/"))return toast("Please choose a JPG, PNG or WEBP photo.",1);if(f.size>15e6)return toast("This photo is too large. Please choose a smaller photo.",1);
+try{D.photo=await procImg(f);route()}catch(e){toast("We couldn't open that photo. Please try another one.",1)}}
+function rotate(){const im=new Image();im.onload=()=>{const c=document.createElement("canvas");c.width=im.height;c.height=im.width;const x=c.getContext("2d");x.translate(c.width/2,c.height/2);x.rotate(Math.PI/2);x.drawImage(im,-im.width/2,-im.height/2);D.photo=c.toDataURL("image/jpeg",.78);route()};im.src=D.photo}
+function bindAdd(){const g=s=>document.querySelector(s);
+g("#next")&&(g("#next").onclick=()=>{grab();step++;route()});g("#back")&&(g("#back").onclick=()=>{grab();step--;route()});
+g("#cancel").onclick=()=>{if(confirm("Discard this memory?")){D=null;step=0;location.hash="#/"}};
+g("#f")&&(g("#f").onchange=e=>takeFile(e.target.files[0]));g("#f2")&&(g("#f2").onchange=e=>takeFile(e.target.files[0]));
+const dr=g("#drop");if(dr){dr.ondragover=e=>{e.preventDefault();dr.classList.add("over")};dr.ondragleave=()=>dr.classList.remove("over");dr.ondrop=e=>{e.preventDefault();takeFile(e.dataTransfer.files[0])}}
+g("#rot")&&(g("#rot").onclick=rotate);g("#rm")&&(g("#rm").onclick=()=>{D.photo=null;route()});
+g("#ap")&&(g("#ap").onclick=()=>{grab();D.people.push({name:"",rel:""});route()});
+document.querySelectorAll("[data-rp]").forEach(b=>b.onclick=()=>{grab();D.people.splice(b.dataset.rp,1);route()});
+if(step===1&&!D.people.length){D.people.push({name:"",rel:""});route();return}
+g("#dv")&&(g("#dv").onclick=()=>{D.voice=null;grab();route()});
+if(g("#rc"))bindRec();
+g("#save")&&(g("#save").onclick=save);g("#gq")&&(g("#gq").onclick=grab);g("#dict")&&(g("#dict").onclick=()=>dictate("#st"))}
+async function bindRec(){const g=s=>document.querySelector(s);
+g("#rc").onclick=async()=>{if(!navigator.mediaDevices||!window.MediaRecorder)return toast("Voice recording isn't available on this device or browser. You can still type the story.",1);
+try{const st=await navigator.mediaDevices.getUserMedia({audio:true});chunks=[];rec=new MediaRecorder(st);rec.ondataavailable=e=>chunks.push(e.data);
+rec.onstop=()=>{st.getTracks().forEach(t=>t.stop());const b=new Blob(chunks,{type:rec.mimeType});if(b.size>2.5e6){toast("That recording is too long to save. Please record a shorter one.",1);return}const r=new FileReader();r.onload=()=>{grab();D.voice=r.result;route()};r.readAsDataURL(b)};
+rec.start();g("#rc").disabled=true;g("#ps").disabled=false;g("#sp").disabled=false;g("#rs").innerHTML='<i class="dot-rec"></i> Recording…'}catch(e){toast("We couldn't use the microphone. Please allow microphone access and try again.",1)}};
+g("#ps").onclick=()=>{if(rec.state==="recording"){rec.pause();g("#ps").textContent="▶ Resume";g("#rs").textContent="Paused"}else{rec.resume();g("#ps").textContent="⏸ Pause";g("#rs").innerHTML='<i class="dot-rec"></i> Recording…'}};
+g("#sp").onclick=()=>rec.stop()}
+function route(){const p=location.hash.split("/");const r=p[1]||"";chrome();const a=$("#app");if(D&&D.editId&&!["add","interview"].includes(r))D=null;
+a.innerHTML=r===""?home():r==="memories"?memories():r==="timeline"?timeline():r==="family"?family():r==="about"?about():r==="add"?add():r==="help"?helpPage():r==="interview"?interview():r==="view"||r==="s"?view(p[2]):r==="notify"?notify():home();
+if(r==="add")bindAdd();if(r==="interview")bindIv();if(r==="view"||r==="s")bindView(p[2]);if(r==="family")bindFam();if(r==="about")bindAbout();if(r==="notify")api("notes/seen","POST").then(()=>{UN=0;chrome()}).catch(()=>{});const mg=$("#mig");if(mg)mg.onclick=migrate;
+const dm=$("#demo");if(dm)dm.onclick=()=>{S.demo=true;S.welcomed=true;ls.set("mv_demo",true);ls.set("mv_w",true);toast("Sample memories added. They're clearly marked “Sample”.");route()};
+const fr=$("#frame");if(fr){fr.onclick=()=>location.hash="#/memories";const st=$("#stage");if(!S.simple)document.querySelector(".hero").onmousemove=e=>{const b=st.getBoundingClientRect(),x=(e.clientX-b.left)/b.width-.5,y=(e.clientY-b.top)/b.height-.5;fr.style.transform=`rotateY(${x*24}deg) rotateX(${-y*24}deg)`;fr.style.setProperty("--sx",x*120+"px")}}
+const q=$("#q");if(q)q.oninput=e=>{sessionStorage.setItem("q",e.target.value);const pos=e.target.selectionStart;route();const n=$("#q");n.focus();n.setSelectionRange(pos,pos)};
+const vt=$("#vt");if(vt)vt.onclick=()=>{S.simple=!S.simple;ls.set("mv_simple",S.simple);route()};
+
+
+document.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>{const m=S.mem.find(x=>x.id===b.dataset.edit);D=JSON.parse(JSON.stringify(m));D.editId=m.id;D.unlock=m.unlockAt?new Date(m.unlockAt).toISOString().slice(0,10):"";step=0;location.hash="#/add"});document.querySelectorAll("[data-del]").forEach(b=>b.onclick=async()=>{if(confirm("Delete this memory? This can't be undone.")){try{await api("memories/"+b.dataset.del,"DELETE");S.mem=S.mem.filter(m=>m.id!==b.dataset.del);location.hash="#/memories"}catch(e){toast(e.message,1)}}});
+if(r!=="add"||step===0)window.scrollTo(0,0)}
+const QS={en:["Who is in this photograph, and how are they related to you?","Where and when was it taken? What was the occasion?","What was happening that day? What do you remember?","What did people say, wear, cook or sing?","Was there something funny, sad or special about this moment?","What would you like your grandchildren to know about it?"],
+ur:["اس تصویر میں کون ہیں اور ان کا آپ سے کیا رشتہ ہے؟","یہ تصویر کہاں اور کب لی گئی؟ کیا موقع تھا؟","اس دن کیا ہو رہا تھا؟ آپ کو کیا یاد ہے؟","لوگوں نے کیا کہا، کیا پہنا، کیا پکایا یا گایا؟","اس لمحے میں کوئی مزے کی، اداس یا خاص بات تھی؟","آپ چاہتے ہیں آپ کے پوتے نواسے اس کے بارے میں کیا جانیں؟"],
+sd:["هن تصوير ۾ ڪير آهن ۽ اوهان سان ڇا رشتو آهي؟","هي تصوير ڪٿي ۽ ڪڏهن ورتي وئي؟ ڪھڙو موقعو هو؟","ان ڏينهن ڇا ٿي رهيو هو؟ اوهان کي ڇا ياد آهي؟","ماڻهن ڇا چيو، ڇا پاتو، ڇا پچايو يا ڳايو؟","ان لمحي ۾ ڪا مزيدار، اداس يا خاص ڳالهه هئي؟","اوهان چاهيو ٿا اوهان جا پوٽا ان بابت ڇا ڄاڻن؟"]};
+let IV={i:0,a:[]},dict=null;
+function sc(m){const it=[[!!m.photo,"a photo"],[m.people.some(p=>p.name),"names of the people"],[!!m.year,"the year"],[!!m.location,"the place"],[(m.story||"").length>=40,"a longer story (a few sentences)"],[!!m.voice,"a voice recording"]];
+return{p:Math.round(it.filter(x=>x[0]).length/6*100),missing:it.filter(x=>!x[0]).map(x=>x[1])}}
+function pbar(m){if(m.demo||!m.owner)return"";const s=sc(m);return`<div class="note" style="margin:14px 0"><b>📋 ${s.p}% complete</b><div class="prog" style="margin:8px 0"><i style="width:${s.p}%"></i></div>${s.missing.length?"Still missing: "+s.missing.join(", ")+".":"Everything is filled in. Well done!"}</div>`}
+function helpPage(){const L=S.mem.filter(m=>m.owner).map(m=>[m,sc(m)]).filter(([m,s])=>s.p<100);
+return`<div class="wrap view"><h2>🧩 Memories that need your help</h2><p class="sub">Ask an older relative to help fill in the missing names, places and stories.</p>${!S.mem.length?empty():L.length?L.map(([m,s])=>`<div class="panel" style="margin:12px 0;max-width:none"><h3>${esc(m.title)} <small>${s.p}% complete</small></h3><p>Missing: ${s.missing.join(", ")}.</p><a class="btn pri" href="#/view/${m.id}">Open and fix</a></div>`).join(""):`<div class="empty"><h3>🎉 Everything is complete!</h3></div>`}</div>`}
+function interview(){if(!D)D={title:"",people:[],year:"",dtype:"exact",location:"",story:"",vis:"me",photo:null,voice:null};
+const q=(QS[S.lang]||QS.en)[IV.i],n=QS.en.length,last=IV.i===n-1;
+return`<div class="wrap"><div class="panel"><div class="prog" role="progressbar" aria-valuemin="1" aria-valuemax="${n}" aria-valuenow="${IV.i+1}"><i style="width:${(IV.i+1)/n*100}%"></i></div><p>Question ${IV.i+1} of ${n}</p><h2 id="qt">${esc(q)}</h2><div class="row"><button class="btn" id="say">🔊 Read aloud</button><button class="btn" id="dict" type="button">🎙️ Speak to type</button></div><label for="ans">Your answer (you can skip any question)</label><textarea id="ans">${esc(IV.a[IV.i]||"")}</textarea><div class="row">${IV.i?'<button class="btn" id="pv">← Back</button>':""}<button class="btn pri" id="nx">${last?"✅ Finish and use my answers":"Next →"}</button><a class="btn" href="#/add" id="xc">Cancel</a></div></div></div>`}
+function bindIv(){const sv=()=>IV.a[IV.i]=$("#ans").value;
+$("#say").onclick=()=>speak($("#qt").textContent);$("#dict").onclick=()=>dictate("#ans");
+$("#nx").onclick=()=>{sv();if(IV.i<QS.en.length-1){IV.i++;route();return}
+const t=IV.a.map(a=>(a||"").trim()).filter(Boolean).join("\n\n");D.story=[D.story,t].filter(Boolean).join("\n\n");IV={i:0,a:[]};step=4;location.hash="#/add"};
+const pv=$("#pv");if(pv)pv.onclick=()=>{sv();IV.i--;route()};$("#xc").onclick=()=>{IV={i:0,a:[]}}}
+function speak(x){if(!("speechSynthesis" in window))return toast("Reading aloud isn't available in this browser.",1);const u=new SpeechSynthesisUtterance(x);u.lang={en:"en-US",ur:"ur-PK",sd:"sd-PK"}[S.lang];u.rate=.85;speechSynthesis.cancel();speechSynthesis.speak(u)}
+function dictate(sel){const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R)return toast("Speaking to type isn't available in this browser. Chrome or Edge can do it.",1);
+if(dict){dict.stop();return}
+if(!ls.get("mv_sp",false)){if(!confirm("Speak-to-type uses your browser's speech service. In Chrome, your voice may be sent to Google to be turned into text. Continue?"))return;ls.set("mv_sp",true)}
+const r=new R(),el=$(sel);dict=r;r.lang={en:"en-PK",ur:"ur-PK",sd:"sd-PK"}[S.lang];r.continuous=true;
+r.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)el.value+=(el.value&&!/\s$/.test(el.value)?" ":"")+e.results[i][0].transcript.trim()+" "};
+r.onerror=e=>toast(e.error==="language-not-supported"?"This language isn't supported for speaking. Try English or Urdu.":e.error==="not-allowed"?"Please allow the microphone and try again.":"Speaking didn't work. Please try again or type instead.",1);
+r.onend=()=>{dict=null;const b=$("#dict");if(b)b.textContent="🎙️ Speak to type"};r.start();$("#dict").textContent="⏹ Stop speaking"}
+function book(){const L=[...S.mem].sort((a,b)=>(a.year||9999)-(b.year||9999));if(!L.length)return toast("Add some memories first, then you can make a book.",1);
+const w=window.open("","_blank");if(!w)return toast("Please allow pop-ups for this page, then try again.",1);
+w.document.write(`<!doctype html><meta charset=utf-8><title>Our Family Book</title><style>body{font:18px/1.7 Georgia,serif;max-width:720px;margin:0 auto;padding:24px;color:#222}h1{text-align:center;font-size:2.4rem;margin:1em 0 .2em}.c{text-align:center;color:#666}section{break-inside:avoid;margin:2.5em 0;border-top:1px solid #ccc;padding-top:1em}img{max-width:100%;max-height:420px;display:block;margin:0 auto 1em;border:8px solid #f3eee4;box-shadow:0 2px 10px #0003}h2{margin:.2em 0}.m{color:#555;font-size:.95rem}.s{white-space:pre-wrap}button{font:inherit;padding:10px 20px;margin:10px auto;display:block}@media print{button{display:none}}</style><button>🖨️ Print or Save as PDF</button><h1>Our Family Book</h1><p class=c>Preserve the photograph. Remember the story.</p>`+L.map(m=>`<section>${m.photo?`<img src="${location.origin}${m.photo}" alt="${esc(m.title)}">`:""}<h2>${esc(m.title)}${m.year?" — "+esc(m.year):""}</h2><p class=m>${esc(m.people.map(p=>p.name+(p.rel?" ("+p.rel+")":"")).join(", "))}${m.location?" · "+esc(m.location):""}</p><p class=s>${esc(m.story)}</p>${m.voice?`<p class=m>🎙️ A voice recording of this story is saved in Memory Vault.</p>`:""}</section>`).join(""));
+w.document.close();w.document.querySelector("button").onclick=()=>w.print()}
+async function api(p,m,b){const r=await fetch("/api/"+p,{method:m||"GET",headers:{"Content-Type":"application/json","X-Requested-With":"memoryvault"},body:b?JSON.stringify(b):undefined,credentials:"same-origin"});let d={};try{d=await r.json()}catch(e){}if(!r.ok)throw Object.assign(new Error(d.error||"Something went wrong. Please try again."),{status:r.status});return d}
+async function boot(){if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(()=>{});
+ try{ME=(await api("me")).user;S.lang=ME.language||S.lang;S.theme=ME.theme||S.theme}catch(e){if(!location.hash.startsWith("#/s/")){location.href="/";return}}
+ if(ME){try{S.mem=(await api("memories")).memories;UN=(await api("notes")).notes.filter(n=>!n.seen).length}catch(e){toast("We couldn't load your memories. Please refresh the page.",1)}}
+ go()}
+async function go(){const p=location.hash.split("/"),r=p[1]||"";
+ try{if(r==="s")CACHE[p[2]]=(await api("memories/"+p[2]+"?t="+encodeURIComponent(p[3]||""))).memory;
+ else if(r==="view"&&ME&&!all().some(m=>m.id===p[2]))CACHE[p[2]]=(await api("memories/"+p[2])).memory;
+ else if(r==="family"&&ME)FAM=await api("family");
+ else if(r==="notify"&&ME)NOTES=(await api("notes")).notes}catch(e){}
+ route()}
+async function save(){const btn=$("#save");btn.disabled=true;btn.textContent="Saving your memory...";const ed=D.editId,isD=x=>typeof x==="string"&&x.startsWith("data:");
+ const body={title:D.title||"Untitled memory",people:D.people.filter(p=>p.name.trim()),year:D.year,dtype:D.dtype,location:D.location,story:D.story,vis:D.vis,unlockAt:D.unlock?new Date(D.unlock+"T00:00:00").getTime():null};
+ if(isD(D.photo))body.photo=D.photo;else if(ed&&!D.photo)body.photo=null;if(isD(D.voice))body.voice=D.voice;else if(ed&&!D.voice)body.voice=null;
+ try{const r=await api("memories"+(ed?"/"+ed:""),ed?"PUT":"POST",body);S.mem=(await api("memories")).memories;D=null;step=0;
+ $("#app").innerHTML=`<div class="wrap"><div class="panel ok"><div class="sp">✨</div><h2>Memory preserved.</h2><div class="row" style="justify-content:center"><a class="btn pri" href="#/view/${r.memory.id}">View Memory</a><a class="btn" href="#/add">Add Another Memory</a></div></div></div>`}
+ catch(e){btn.disabled=false;btn.textContent="💾 Save Memory";toast(e.message,1)}}
+function legBanner(){return LEG.length?`<p class="note">📦 You have ${LEG.length} memories saved only in this browser. <button class="btn pri" id="mig">Move them to my account</button></p>`:""}
+async function migrate(){let n=0;for(const m of[...LEG]){try{await api("memories","POST",{title:m.title,people:m.people||[],year:m.year||"",dtype:m.dtype,location:m.location||"",story:m.story||"",vis:m.vis||"me",photo:m.photo||undefined,voice:m.voice||undefined});LEG=LEG.filter(x=>x.id!==m.id);ls.set("mv_mem",LEG);n++}catch(e){toast(e.message,1);break}}
+ if(n){S.mem=(await api("memories")).memories;toast("Moved "+n+" memories to your account.")}route()}
+function viewTools(m){if(m.demo)return"";let h="";
+ if(m.owner){h+=`<div class="row"><button class="btn" data-edit="${m.id}">✏️ Add or fix details</button><button class="btn" id="ask">💬 Ask a relative</button><button class="btn danger" data-del="${m.id}">🗑️ Delete</button></div>`;
+ if(m.vis==="link"&&m.linkToken)h+=`<p class="note">🔗 Private link (anyone who has it can view):<input type="text" readonly id="lk" value="${location.origin}/archive.html#/s/${m.id}/${m.linkToken}" style="margin:6px 0"><button class="btn" id="cp">Copy link</button></p>`}
+ else if(m.vis==="pub"&&ME)h+=`<div class="row"><button class="btn" id="rp">🚩 Report this memory</button></div>`;
+ return h+`<div id="act" aria-live="polite"><h3>Family activity</h3>Loading…</div>`}
+function bindView(id){const cp=$("#cp");if(cp)cp.onclick=async()=>{try{await navigator.clipboard.writeText($("#lk").value);toast("Link copied.")}catch(e){$("#lk").select();toast("Press Ctrl+C to copy the link.")}};
+ const ak=$("#ask");if(ak)ak.onclick=async()=>{const q=prompt("What would you like to ask? For example: Who are the people in this photo?");if(!q)return;
+ try{const d=await api("memories/"+id+"/ask","POST",{question:q}),u=location.origin+d.url;ak.closest(".row").insertAdjacentHTML("afterend",`<p class="note">Send this link to your relative. They do not need an account.<br><a href="https://wa.me/?text=${encodeURIComponent("Please help me remember this photo: "+u)}" target="_blank" rel="noopener">Send on WhatsApp</a><br><small>${esc(u)}</small></p>`)}catch(e){toast(e.message,1)}};
+ const rp=$("#rp");if(rp)rp.onclick=async()=>{const r=prompt("Why are you reporting this memory?");if(r===null)return;try{await api("memories/"+id+"/report","POST",{reason:r});toast("Thank you. We will review this memory.")}catch(e){toast(e.message,1)}};
+ loadAct(id)}
+async function loadAct(id){const el=$("#act");if(!el)return;if(!ME){el.remove();return}
+ try{const d=await api("memories/"+id+"/activity"),lab={answer:"💬 Answer from ",person:"👤 Person added by ",story:"✍️ Added to the story by "};
+ el.innerHTML="<h3>Family activity</h3>"+(d.items.length?d.items.map(c=>`<div class="panel" style="margin:8px 0;max-width:none"><b>${lab[c.type]}${esc(c.name)}</b>${c.status==="pending"?" <span class='tag' style='position:static'>Waiting for you</span>":""}<p class="story" style="font-size:1rem">${esc(c.content)}</p>${c.hasFile?`<audio controls src="/api/cmedia/${c.id}" style="width:100%"></audio>`:""}<small>${new Date(c.created).toLocaleDateString()}</small>${d.isOwner?`<div class="row">${c.status==="pending"?`<button class="btn" data-ok="${c.id}">Approve</button>`:""}<button class="btn danger" data-rc="${c.id}">Remove</button></div>`:""}</div>`).join(""):"<p>No activity yet.</p>")+(d.canAdd?`<label for="cn">Add something you know</label><select id="ct"><option value="story">✍️ More of the story</option><option value="person">👤 Who is in the photo</option></select><textarea id="cn" style="min-height:90px"></textarea><button class="btn pri" id="cs" style="margin-top:10px">Add</button>`:"");
+ const act=(b,u,m)=>b.onclick=async()=>{try{await api(u,m);loadAct(id)}catch(e){toast(e.message,1)}};
+ el.querySelectorAll("[data-ok]").forEach(b=>act(b,"contribs/"+b.dataset.ok+"/approve","POST"));el.querySelectorAll("[data-rc]").forEach(b=>b.onclick=()=>{if(confirm("Remove this?"))act(b,"contribs/"+b.dataset.rc,"DELETE")()});
+ const cs=$("#cs");if(cs)cs.onclick=async()=>{try{await api("memories/"+id+"/contrib","POST",{type:$("#ct").value,content:$("#cn").value});loadAct(id)}catch(e){toast(e.message,1)}}}catch(e){el.textContent=""}}
+function notify(){return`<div class="wrap view"><h2>🔔 Notifications</h2>${NOTES.length?NOTES.map(n=>`<div class="panel" style="margin:8px 0;max-width:none">${n.seen?"":"🆕 "}${esc(n.text)}<br><small>${new Date(n.created_at).toLocaleString()}</small></div>`).join(""):"<p>Nothing new yet.</p>"}</div>`}
+function bindFam(){const re=async()=>{FAM=await api("family");S.mem=(await api("memories")).memories;route()},on=(sel,f)=>document.querySelectorAll(sel).forEach(b=>b.onclick=async()=>{try{await f(b);await re()}catch(e){toast(e.message,1)}});
+ const sd=$("#isd");if(sd)sd.onclick=async()=>{try{const r=await api("family/invite","POST",{phone:$("#ip").value,role:$("#ir").value});toast(r.sent?"Invitation sent.":"Invitation saved. We could not send the message, so please ask them to open the site and sign up with this number.");await re()}catch(e){toast(e.message,1)}};
+ on("[data-acc]",b=>api("family/accept/"+b.dataset.acc,"POST"));on("[data-dec]",b=>api("family/decline/"+b.dataset.dec,"POST"));on("[data-ci]",b=>api("family/invites/"+b.dataset.ci,"DELETE"));
+ on("[data-rm]",b=>confirm("Remove this person from your family?")&&api("family/members/"+b.dataset.rm,"DELETE"));on("[data-lv]",b=>confirm("Leave this family?")&&api("family/leave/"+b.dataset.lv,"DELETE"))}
+function bindAbout(){const b=$("#bk");if(b)b.onclick=backup;const k=$("#bookb");if(k)k.onclick=book;
+ const l=$("#lo");if(l)l.onclick=async()=>{try{await api("logout","POST")}catch(e){}location.href="/"};
+ const c=$("#cpw");if(c)c.onclick=async()=>{try{await api("password","POST",{current:$("#cp1").value,password:$("#cp2").value});$("#cp1").value=$("#cp2").value="";toast("Your password has been changed.")}catch(e){toast(e.message,1)}}}
+function backup(){const L=S.mem.filter(m=>m.owner);if(!L.length)return toast("You have no memories to download yet.",1);
+ const b=new Blob([JSON.stringify({app:"memory-vault",v:2,note:"Text details only. Photos and recordings stay in your account.",memories:L.map(({photo,voice,linkToken,...r})=>r)},null,1)],{type:"application/json"}),a=document.createElement("a");
+ a.href=URL.createObjectURL(b);a.download="memory-vault-data-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),3000)}
+addEventListener("hashchange",go);boot();
+</script></body></html>

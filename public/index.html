@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Memory Vault — Log In</title><style>
+body{margin:0;min-height:100vh;background:radial-gradient(700px 500px at 80% 10%,#8B5CF655,transparent),radial-gradient(600px 400px at 10% 90%,#06B6D433,transparent),#070B14;color:#F8FAFC;font:18px/1.5 system-ui,Arial,sans-serif;display:grid;place-items:center;padding:16px}
+main{width:100%;max-width:440px;background:#0D1322;border:1px solid #ffffff22;border-radius:22px;padding:26px}
+.logo{text-align:center;font-weight:900;letter-spacing:.14em;color:#06B6D4;margin-bottom:6px}h1{font-size:1.6rem;margin:.2em 0 .3em;text-align:center}p.s{color:#CBD5E1;text-align:center;margin-top:0}
+label{display:block;font-weight:700;margin:14px 0 6px}input,select{width:100%;min-height:54px;font:inherit;padding:0 14px;border-radius:14px;border:2px solid #ffffff33;background:#070B14;color:#fff}
+input:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid #FBBF24;outline-offset:2px}
+.b{width:100%;min-height:56px;margin-top:18px;border:0;border-radius:14px;font:inherit;font-weight:800;color:#fff;background:linear-gradient(135deg,#8B5CF6,#06B6D4);cursor:pointer}
+.l{background:none;border:0;color:#06B6D4;font:inherit;font-weight:700;cursor:pointer;text-decoration:underline;padding:10px 4px;min-height:44px}
+.err{background:#7f1d1d;border:2px solid #f87171;border-radius:12px;padding:10px 14px;margin-top:12px}.ok{background:#14532d;border:2px solid #4ade80;border-radius:12px;padding:10px 14px;margin-top:12px}
+.pw{display:flex;gap:8px}.pw button{min-width:64px;border-radius:14px;border:2px solid #ffffff33;background:#070B14;color:#fff;font:inherit;cursor:pointer}
+.code{text-align:center;font-size:2rem;letter-spacing:.5em;padding-left:.5em}.c{text-align:center}
+.bar{height:8px;border-radius:5px;background:#ffffff22;margin-top:8px}.bar i{display:block;height:100%;border-radius:5px}
+.chk{display:flex;gap:10px;align-items:center;margin-top:14px}.chk input{width:26px;height:26px;min-height:0}details{border-top:1px solid #ffffff22;padding:10px 0}summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}
+</style><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#070B14"></head><body><main><div class="logo">MEMORY VAULT</div><div id="v"></div><div id="m" role="alert" aria-live="assertive"></div></main>
+<script>
+const $=s=>document.querySelector(s);let cfg={whatsapp:false,devMode:true},ctx={};
+async function api(p,b){const r=await fetch('/api/'+p,{method:b?'POST':'GET',headers:{'Content-Type':'application/json','X-Requested-With':'memoryvault'},body:b?JSON.stringify(b):undefined,credentials:'same-origin'});
+ let d={};try{d=await r.json()}catch(e){}if(!r.ok)throw Object.assign(new Error(d.error||'Something went wrong. Please try again.'),{data:d,status:r.status});return d}
+const msg=(t,ok)=>$('#m').innerHTML=t?`<div class="${ok?'ok':'err'}">${ok?'✅ ':'⚠️ '}${t.replace(/[<>&]/g,'')}</div>`:'';
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pwf=(id,lab,ph)=>`<label for="${id}">${lab}</label><div class="pw"><input id="${id}" type="password" autocomplete="${id==='pw'?'current-password':'new-password'}" placeholder="${ph}"><button type="button" data-eye="${id}" aria-label="Show or hide password">👁</button></div>`;
+const phf=(id='ph')=>`<label for="${id}">Pakistani Mobile Number</label><input id="${id}" type="tel" inputmode="tel" autocomplete="tel" placeholder="03XX XXXXXXX">`;
+const chf=()=>`<label for="ch">Send code by</label><select id="ch"><option value="sms">📱 SMS</option>${cfg.whatsapp?'<option value="whatsapp">💬 WhatsApp</option>':''}</select>`;
+const dev=()=>cfg.devMode?'<p class="s" style="font-size:.9rem">Test mode: no real SMS is sent. The code is printed in the server console.</p>':'';
+function strength(p){let n=(p.length>=8)+/[A-Z]/.test(p)+/[a-z]/.test(p)+/\d/.test(p)+/[^A-Za-z0-9]/.test(p)+(p.length>=12);return n<=3?['Weak','#f87171',33]:n<=5?['Medium','#FBBF24',66]:['Strong','#4ade80',100]}
+function bind(){document.querySelectorAll('[data-eye]').forEach(b=>b.onclick=()=>{const i=$('#'+b.dataset.eye);i.type=i.type==='password'?'text':'password'});
+ document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{msg('');go(b.dataset.go)});
+ const p=$('#np');if(p)p.oninput=()=>{const[t,c,w]=strength(p.value);$('#st').innerHTML=`<div class="bar"><i style="width:${w}%;background:${c}"></i></div><small>Strength: <b>${t}</b>. Use 8+ characters with an uppercase letter, a lowercase letter and a number.</small>`}}
+const run=f=>async e=>{e&&e.preventDefault&&e.preventDefault();msg('');try{await f()}catch(x){msg(x.message)}};
+function view(html){$('#v').innerHTML=html;bind();const f=$('#v input,#v select');f&&f.focus()}
+function go(n){({login,signup,forgot}[n]||home)()}
+function login(){view(`<h1>Welcome Back</h1>${phf()}${pwf('pw','Password','••••••••••')}<button class="l" data-go="forgot">Forgot Password?</button><button class="b" id="go">Log In</button><p class="c">Don't have an account? <button class="l" data-go="signup">Create Account</button></p>`);
+ $('#go').onclick=run(async()=>{const d=await api('login',{phone:$('#ph').value,password:$('#pw').value});if(d.needsVerify){ctx={phone:d.phone,masked:d.masked,purpose:'signup'};return otp()}home(d.user)})}
+function signup(){view(`<h1>Create Your Memory Vault Account</h1><p class="s">Preserve your family's memories and stories.</p><label for="nm">Full Name</label><input id="nm" autocomplete="name" placeholder="Enter your name">${phf()}${pwf('np','Password','Create a password')}<div id="st"></div>${pwf('np2','Confirm Password','Enter password again')}${chf()}<label class="chk"><input id="ag" type="checkbox"> I agree to the <a href="/terms.html" target="_blank" style="color:#06B6D4">Terms</a>&nbsp;&amp;&nbsp;<a href="/privacy.html" target="_blank" style="color:#06B6D4">Privacy Policy</a></label><button class="b" id="go">Create Account</button><p class="c">Already have an account? <button class="l" data-go="login">Log In</button></p>`);
+ $('#go').onclick=run(async()=>{if($('#np').value!==$('#np2').value)throw Error("The two passwords don't match.");
+  const d=await api('signup',{fullName:$('#nm').value,phone:$('#ph').value,password:$('#np').value,agree:$('#ag').checked,channel:$('#ch').value});ctx={phone:d.phone,masked:d.masked,purpose:'signup'};otp()})}
+function otp(){view(`<h1>${ctx.purpose==='reset'?'Enter Verification Code':'Verify Your Mobile Number'}</h1><p class="s">We sent a 6-digit verification code to <b>${ctx.masked}</b>.</p>${dev()}<label for="cd">Verification code</label><input id="cd" class="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="______"><button class="b" id="go">${ctx.purpose==='reset'?'Verify':'Verify Number'}</button><div class="c"><button class="l" id="rs">Resend Code</button><button class="l" id="cn">Change Number</button></div>`);
+ $('#go').onclick=run(async()=>{const d=await api('otp/verify',{phone:ctx.phone,purpose:ctx.purpose,code:$('#cd').value.trim()});
+  if(ctx.purpose==='signup')home(d.user);else if(ctx.purpose==='reset'){ctx.token=d.token;newpw()}else{msg('Your mobile number was changed.',1);home()}});
+ $('#rs').onclick=run(async()=>{await api('otp/resend',{phone:ctx.phone,purpose:ctx.purpose,channel:'sms'});msg('A new code was sent.',1)});
+ $('#cn').onclick=()=>ctx.purpose==='signup'?signup():ctx.purpose==='reset'?forgot():home()}
+function forgot(){view(`<h1>Reset Your Password</h1><p class="s">Enter your Pakistani mobile number and we'll send you a verification code.</p>${phf()}${chf()}<button class="b" id="go">Send Code</button><p class="c"><button class="l" data-go="login">Back to Log In</button></p>`);
+ $('#go').onclick=run(async()=>{const d=await api('reset/start',{phone:$('#ph').value,channel:$('#ch').value});ctx={phone:d.phone,masked:d.masked,purpose:'reset'};otp()})}
+function newpw(){view(`<h1>Create New Password</h1>${pwf('np','New Password','New password')}<div id="st"></div>${pwf('np2','Confirm New Password','Enter password again')}<button class="b" id="go">Reset Password</button>`);
+ $('#go').onclick=run(async()=>{if($('#np').value!==$('#np2').value)throw Error("The two passwords don't match.");await api('reset/finish',{phone:ctx.phone,token:ctx.token,password:$('#np').value});
+  view(`<h1>✅ Password changed</h1><p class="s">Your password has been successfully changed.</p><button class="b" data-go="login">Log In</button>`)})}
+async function home(u){try{u=u||(await api('me')).user}catch(e){return login()}
+ view(`<h1>Hello, ${esc(u.fullName)}</h1><p class="s">Verified mobile: ${esc(u.phone)}<br>Memories: ${u.memories}</p>
+<details><summary>📱 Change Mobile Number</summary>${phf('nph')}${pwf('cp','Your password','Password')}${chf()}<button class="b" id="cg">Send Code to New Number</button></details>
+<details><summary>🔐 Security — Active Sessions</summary><div id="ss"></div><button class="b" id="lo">Log out of other devices</button></details>
+<details><summary>🗑️ Delete Account</summary><p>Deleting your account removes access now. You have 30 days to recover it by logging in; after that it may be permanently removed.</p>${pwf('dp','Your password','Password')}<label for="dc">Type DELETE to confirm</label><input id="dc"><button class="b" id="dd" style="background:#b91c1c">Delete My Account</button></details>
+<a class="b" href="/archive.html" style="display:flex;align-items:center;justify-content:center;text-decoration:none">🖼️ Open My Memory Archive</a><button class="b" id="out">🚪 Log Out</button>`);
+ $('#out').onclick=run(async()=>{await api('logout',{});login()});
+ $('#cg').onclick=run(async()=>{const d=await api('phone/start',{newPhone:$('#nph').value,password:$('#cp').value,channel:$('#ch').value});ctx={phone:d.phone,masked:d.masked,purpose:'change'};otp()});
+ $('#lo').onclick=run(async()=>{await api('sessions/others',{});msg('Logged out of other devices.',1)});
+ $('#dd').onclick=run(async()=>{if(!confirm('Delete your account?'))return;await api('account/delete',{password:$('#dp').value,confirm:$('#dc').value});login();msg('Your account has been scheduled for deletion.',1)});
+ api('sessions').then(d=>$('#ss').innerHTML=d.sessions.map(s=>`<p>${s.current?'✅ This device':'🖥️ Other device'} — ${new Date(s.created_at).toLocaleDateString()}</p>`).join('')).catch(()=>{})}
+if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
+api('config').then(c=>cfg=c).catch(()=>{}).finally(()=>home());
+</script></body></html>
